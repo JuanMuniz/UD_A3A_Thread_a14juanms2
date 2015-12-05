@@ -6,7 +6,6 @@ import java.util.Random;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -16,12 +15,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class UD_A3A_Thread_a14juanms extends Activity {
-    Random r=new Random();
+    Random r = new Random();
     TextView mTextField;
     TextView txtNumero;
     int numero;
     int numerito;
-    boolean fin= false;
+    boolean fin = false;
     private final int TEMPO_CRONO = 20;
     private task t;
     private Thread meuFio;
@@ -44,32 +43,31 @@ public class UD_A3A_Thread_a14juanms extends Activity {
             TextView texto1 = (TextView) target
                     .findViewById(R.id.mTextField);
 
-            if (msg.arg2==1){
+            if (msg.arg2 == 1) {
                 Toast.makeText(target.getApplicationContext(), "ACABOUSE O CRONO", Toast.LENGTH_LONG).show();
                 texto1.setText(String.valueOf(0));
-            }
-            else {
+            } else {
                 texto1.setText(String.valueOf(msg.arg1));
             }
         }
-    };
+    }
+
+    ;
     // Fin do Handler
-
-
 
 
     private class MeuFio extends Thread {
 
         public void run() {
-            for (int a = TEMPO_CRONO; a >=0; a--) {
-                if (fin){
+            for (int a = TEMPO_CRONO; a >= 0; a--) {
+                if (fin) {
                     break;
                 }
                 try {
                     Thread.sleep(1000);
                     Message msg = new Message();
                     msg.arg1 = a;
-                    numero=a;
+                    numero = a;
                     ponte.sendMessage(msg);
                 } catch (InterruptedException e) {
 
@@ -85,13 +83,11 @@ public class UD_A3A_Thread_a14juanms extends Activity {
     ;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ud__a3_a__thread_a14juanms);
-        txtNumero=(TextView)findViewById(R.id.txtNumero);
+        txtNumero = (TextView) findViewById(R.id.txtNumero);
 
         //INICIAR CRONO THREAD
         Button btnCrono = (Button) findViewById(R.id.btnCrono);
@@ -101,7 +97,7 @@ public class UD_A3A_Thread_a14juanms extends Activity {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
 
-                if (((meuFio == null) || (!meuFio.isAlive())) && ((t==null) || (t.getStatus()==AsyncTask.Status.FINISHED))) {
+                if (((meuFio == null) || (!meuFio.isAlive())) && ((t == null) || (t.getStatus() == AsyncTask.Status.FINISHED))) {
                     fin = false;
                     txtNumero.setText("");
                     numerito = r.nextInt(6) + 5;
@@ -115,7 +111,7 @@ public class UD_A3A_Thread_a14juanms extends Activity {
             }
         });
         //PARAR CRONO THREAD
-        Button btnParar=(Button) findViewById(R.id.btnParar);
+        Button btnParar = (Button) findViewById(R.id.btnParar);
         btnParar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,29 +122,28 @@ public class UD_A3A_Thread_a14juanms extends Activity {
             }
         });
         //INICIAR CRONO ASYNC
-        Button btnCronoAsync = (Button)findViewById(R.id.btnCronoAsync);
+        Button btnCronoAsync = (Button) findViewById(R.id.btnCronoAsync);
         btnCronoAsync.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
 
-                if (((t==null) || (t.getStatus()==AsyncTask.Status.FINISHED)) && ((meuFio==null) ||  meuFio.isAlive()==false)){
+                if (((t == null) || (t.getStatus() == AsyncTask.Status.FINISHED)) && ((meuFio == null) || meuFio.isAlive() == false)) {
                     txtNumero.setText("");
-                    numerito=r.nextInt(6)+5;
-                    txtNumero.setText(""+numerito);
-                    t= new task();
+                    numerito = r.nextInt(6) + 5;
+                    txtNumero.setText("" + numerito);
+                    t = new task();
                     t.execute();
 
-                }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(), "A tarefa non acabou!!!",
                             Toast.LENGTH_SHORT).show();
                 }
             }
         });
-       //CANCELAR CRONO ASYNC
-        Button btnCancelarAsync = (Button)findViewById(R.id.btnPararAsync);
+        //CANCELAR CRONO ASYNC
+        Button btnCancelarAsync = (Button) findViewById(R.id.btnPararAsync);
         btnCancelarAsync.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -167,17 +162,18 @@ public class UD_A3A_Thread_a14juanms extends Activity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            for (int i = TEMPO_CRONO; i >=0; i--) {
+            for (int i = TEMPO_CRONO; i >= 0; i--) {
+                Message msg = new Message();
+                msg.arg1 = i;
+                numero = i;
+                ponte.sendMessage(msg);
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                Message msg = new Message();
-                msg.arg1 = i;
-                numero=i;
-                ponte.sendMessage(msg);
+
 
                 if (isCancelled())
                     break;
@@ -211,11 +207,9 @@ public class UD_A3A_Thread_a14juanms extends Activity {
             Toast.makeText(getApplicationContext(), "Crono cancelado!",
                     Toast.LENGTH_SHORT).show();
         }
-    };
+    }
 
-
-
-
+    ;
 
 
 }
